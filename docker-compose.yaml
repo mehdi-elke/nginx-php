@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+    web:
+        image: nginx:latest
+        environment:
+            - "SOURCE_FOLDER=${SOURCE_FOLDER}"
+        ports:
+            - "8080:80"
+        volumes:
+            - ${SOURCE_FOLDER}:/code
+            - ./site.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - code-network
+    php:
+        image: php:fpm
+        volumes:
+            - ${SOURCE_FOLDER}:/code
+        networks:
+            - code-network
+
+networks:
+    code-network:
+        driver: bridge
